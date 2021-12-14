@@ -69,6 +69,14 @@ class Album
     end
   end
 
+  def self.sort_sold
+    array = @@sold_albums.values.sort_by! &:name
+    @@sold_albums = {}
+    array.each do |element|
+      @@sold_albums[element.id] = element
+    end
+  end
+
   def sold
     @@sold_albums[self.id] = Album.new(self.name, self.artist, self.genre, self.year, self.id)
     self.delete
