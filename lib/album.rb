@@ -50,6 +50,10 @@ class Album
     @@albums[id]
   end
 
+  def self.find_sold(id)
+    @@sold_albums[id]
+  end
+
   def update(name, artist, genre, year)
     @name = name
     @artist = artist

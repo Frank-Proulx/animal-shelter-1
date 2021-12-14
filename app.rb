@@ -30,6 +30,7 @@ end
 
 get('/albums/sort_sold') do
   Album.sort_sold
+  @albums = Album.all
   @sold_albums = Album.sold_all
   erb(:albums)
 end
@@ -43,6 +44,10 @@ get('/albums/:id') do
   erb(:album)
 end
 
+get('/albums/sold/:id') do
+  @album = Album.find_sold(params[:id].to_i())
+  erb(:album_sold)
+end
 post('/albums') do
   name = params[:album_name]
   artist = params[:album_artist]
@@ -71,6 +76,14 @@ end
 delete('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   @album.delete()
+  @albums = Album.all
+  @sold_albums = Album.sold_all()
+  erb(:albums)
+end
+
+patch('/albums/sold/:id') do
+  @album = Album.find(params[:id].to_i())
+  @album.sold
   @albums = Album.all
   @sold_albums = Album.sold_all()
   erb(:albums)
