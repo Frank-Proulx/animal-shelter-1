@@ -1,11 +1,16 @@
+require ('pry')
+
 class Album
-  attr_reader :id, :name
+  attr_accessor :id, :name, :artist, :genre, :year
 
   @@albums = {}
   @@total_rows = 0 
 
-  def initialize(name, id)
+  def initialize(name, artist, genre, year, id)
     @name = name
+    @artist = artist
+    @genre = genre
+    @year = year
     @id = id || @@total_rows += 1
   end
 
@@ -13,12 +18,22 @@ class Album
     @@albums.values()
   end
 
+  def self.search(name_searched)
+    arr_results = []
+    @@albums.values.each do |album|
+      if album.name == name_searched
+        arr_results.push(album)
+      end
+    end
+    arr_results
+  end
+
   def save
-    @@albums[self.id] = Album.new(self.name, self.id)
+    @@albums[self.id] = Album.new(self.name, self.artist, self.genre, self.year, self.id)
   end
 
   def ==(album_to_compare)
-    self.name() == album_to_compare.name()
+    (self.name == album_to_compare.name) && (self.year == album_to_compare.year) && (self.genre == album_to_compare.genre) && (self.artist == album_to_compare.artist)
   end
 
   def self.clear
@@ -30,11 +45,22 @@ class Album
     @@albums[id]
   end
 
-  def update(name)
+  def update(name, artist, genre, year)
     @name = name
+    @artist = artist
+    @genre = genre
+    @year = year
   end
 
   def delete
     @@albums.delete(self.id)
+  end
+
+  def self.sort
+    array = @@albums.values.sort_by! &:name
+    @@albums = {}
+    array.each do |element|
+      @@albums[element.id] = element
+    end
   end
 end
