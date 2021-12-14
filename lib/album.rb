@@ -4,6 +4,7 @@ class Album
   attr_accessor :id, :name, :artist, :genre, :year
 
   @@albums = {}
+  @@sold_albums = {}
   @@total_rows = 0 
 
   def initialize(name, artist, genre, year, id)
@@ -16,6 +17,10 @@ class Album
 
   def self.all
     @@albums.values()
+  end
+
+  def self.sold_all
+    @@sold_albums.values()
   end
 
   def self.search(name_searched)
@@ -62,5 +67,10 @@ class Album
     array.each do |element|
       @@albums[element.id] = element
     end
+  end
+
+  def sold
+    @@sold_albums[self.id] = Album.new(self.name, self.artist, self.genre, self.year, self.id)
+    self.delete
   end
 end

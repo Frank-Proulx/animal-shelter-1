@@ -93,4 +93,13 @@ describe '#Album' do
       expect(Album.all).to(eq([album2, album3, album1]))
     end
   end
+
+  describe('#sold') do
+    it("sorts albums by name") do
+      album1 = Album.new("Giant Steps", "John Coltrane", "Jazz", 1960, nil)
+      album1.save()
+      album1.sold
+      expect(Album.sold_all).to(eq([album1]))
+    end
+  end
 end
