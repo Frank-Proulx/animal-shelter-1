@@ -52,7 +52,7 @@ describe '#Album' do
     it("updates an album by id") do
       album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       album.save()
-      album.update({:name => "A Love Supreme", :artist => "John Coltrane", :genre => "Jazz", :year => 1960})
+      album.update("A Love Supreme") # update for all attributes
       expect(album.name).to(eq("A Love Supreme"))
     end
   end

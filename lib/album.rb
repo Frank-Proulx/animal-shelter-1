@@ -29,9 +29,9 @@ class Album
     albums
   end
 
-  def self.sold_all
-    @@sold_albums.values()
-  end
+  # def self.sold_all
+  #   @@sold_albums.values()
+  # end
 
   def self.search(name_searched)
     arr_results = []
@@ -59,15 +59,18 @@ class Album
   def self.find(id)
     album = DB.exec("SELECT * FROM albums WHERE id = #{id};").first # update
     name = album.fetch("name")
+    artist = album.fetch("artist")
+    genre = album.fetch("genre")
+    year = album.fetch("year").to_i
     id = album.fetch("id").to_i
-    Album.new({:name => name, :id => id})
+    Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :id => id})
   end
 
   def self.find_sold(id)
     @@sold_albums[id]
   end
 
-  def update(name) # update
+  def update(name) # update for all attributes
     @name = name
     DB.exec("UPDATE albums SET name = '#{@name}' WHERE id = #{@id};")
   end
