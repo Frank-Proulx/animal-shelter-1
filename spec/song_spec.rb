@@ -1,14 +1,11 @@
-require 'rspec'
 require 'song'
 require 'album'
-require 'pry'
+require 'spec_helper'
 
 describe '#Song' do
 
   before(:each) do
-    Album.clear()
-    Song.clear()
-    @album = Album.new("Giant Steps", nil)
+    @album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
     @album.save()
   end
 
@@ -83,9 +80,9 @@ describe '#Song' do
     it("finds songs for an album") do
       album2 = Album.new("Blue", nil)
       album2.save
-      song = Song.new("Naima", @album.id, nil)
+      song = Song.new({:name => "Naima", :album_id => @album.id, :id => nil})
       song.save()
-      song2 = Song.new("California", album2.id , nil)
+      song2 = Song.new({:name => "California", :album_id => album2.id , :id => nil})
       song2.save()
       expect(Song.find_by_album(album2.id)).to(eq([song2]))
     end
@@ -93,7 +90,7 @@ describe '#Song' do
 
   describe('#album') do
     it("finds the album a song belongs to") do
-      song = Song.new("Naima", @album.id, nil)
+      song = Song.new({:name => "Naima", :album_id => @album.id, :id => nil})
       song.save()
       expect(song.album()).to(eq(@album))
     end

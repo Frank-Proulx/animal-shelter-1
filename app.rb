@@ -4,6 +4,9 @@ require('./lib/album')
 require('./lib/song')
 require('pry')
 also_reload('lib/**/*.rb')
+require 'pg'
+
+DB = PG.connect({:dbname => "record_store"})
 
 get('/test') do
   @something = "this is a variable"
@@ -49,6 +52,7 @@ get('/albums/sold/:id') do
   @album = Album.find_sold(params[:id].to_i())
   erb(:album_sold)
 end
+
 post('/albums') do
   name = params[:album_name]
   artist = params[:album_artist]
