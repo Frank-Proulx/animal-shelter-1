@@ -30,7 +30,3 @@
   <p><a href="/albums/<%= @album.id %>/edit">Edit album</a></p>
   <a href="/albums">Return to album list</a>
 
-<form action="/albums/sold/<%= @album.id() %>" method="post">
-  <input name="_method" type="hidden" value="patch">
-  <button type="submit" class="btn">Mark as sold!</button>
-</form>

@@ -1,55 +1,36 @@
 <h1>All Sales Vinyl</h1>
 
+<h3>Available Records</h3>
+  <% if @albums.any? %>
+    <ul>
+      <% @albums.each do |album| %>
+        <li><a href="/albums/<%= album.id %>"><%= album.name %></a></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>There are currently no records to display.</p>
+  <% end %>
 
-<div class="row">
-  
-  <div class="col-6">
-  <h3>Available Records</h3>
-    <% if @albums.any? %>
-      <ul>
-        <% @albums.each do |album| %>
-          <li><a href="/albums/<%= album.id %>"><%= album.name %></a></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>There are currently no records to display.</p>
-    <% end %>
-
-    <form action="/albums/sort"><input name="sort" type="hidden"><button type="submit">Sort by name</button></form>
-  </div>
-  <div class="col-6">
-    <h3>Sold Records</h3>
-    <% if @sold_albums.any? %>
-      <ul>
-        <% @sold_albums.each do |album| %>
-          <li><a href="/albums/sold/<%= album.id %>"><%= album.name %></a></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>There are currently no sold records to display.</p>
-    <% end %>
-    <form action="/albums/sort_sold"><input name="sort_sold" type="hidden"><button type="submit">Sort by name</button></form>
-  </div>
-</div>
+  <form action="/albums/sort"><input name="sort" type="hidden"><button type="submit">Sort by name</button></form>
 
 <a href="/albums/new">Add a new album</a>
 
-<form action="/albums">
-  <div class="form-group">
-    <label for="search">Search</label>
-    <input id="search" name="search" class="form-control" type="text">
-  </div>
-  <button type="submit" class="btn">Go!</button>
-</form>
+# <form action="/albums">
+#   <div class="form-group">
+#     <label for="search">Search</label>
+#     <input id="search" name="search" class="form-control" type="text">
+#   </div>
+#   <button type="submit" class="btn">Go!</button>
+# </form>
 
-<% array = Album.search(params[:search]) %>
-<% if array.any? %>
-  <p>Your search yielded the following results:</p>
-  <ul>
-    <% array.each do |album| %>
-      <li><a href="/albums/<%= album.id %>"><%= album.name %></a></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>There are currently no records to display.</p>
-<% end %>
+# <% array = Album.search(params[:search]) %>
+# <% if array.any? %>
+#   <p>Your search yielded the following results:</p>
+#   <ul>
+#     <% array.each do |album| %>
+#       <li><a href="/albums/<%= album.id %>"><%= album.name %></a></li>
+#     <% end %>
+#   </ul>
+# <% else %>
+#   <p>There are currently no records to display.</p>
+# <% end %>

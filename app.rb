@@ -15,27 +15,17 @@ end
 
 get('/') do
   @albums = Album.all
-  @sold_albums = Album.sold_all
   erb(:albums)
 end
 
 get('/albums') do
   @albums = Album.all
-  @sold_albums = Album.sold_all
   erb(:albums) # not sure if i was supposed to delete this?
 end
 
 get('/albums/sort') do
   Album.sort
   @albums = Album.all
-  @sold_albums = Album.sold_all
-  erb(:albums)
-end
-
-get('/albums/sort_sold') do
-  Album.sort_sold
-  @albums = Album.all
-  @sold_albums = Album.sold_all
   erb(:albums)
 end
 
@@ -48,21 +38,14 @@ get('/albums/:id') do
   erb(:album)
 end
 
-get('/albums/sold/:id') do
-  @album = Album.find_sold(params[:id].to_i())
-  erb(:album_sold)
-end
-
 post('/albums') do
   name = params[:album_name]
   artist = params[:album_artist]
   genre = params[:album_genre]
   year = params[:album_year]
-  sold = 'f'
-  album = Album.new(name, artist, genre, year, sold, nil)
+  album = Album.new(name, artist, genre, year, nil)
   album.save()
   @albums = Album.all()
-  @sold_albums = Album.sold_all()
   erb(:albums)
 end
 
@@ -75,7 +58,6 @@ patch('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   @album.update(params[:name], params[:artist], params[:genre], params[:year])
   @albums = Album.all
-  @sold_albums = Album.sold_all()
   erb(:albums)
 end
 
@@ -83,15 +65,6 @@ delete('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   @album.delete()
   @albums = Album.all
-  @sold_albums = Album.sold_all()
-  erb(:albums)
-end
-
-patch('/albums/sold/:id') do
-  @album = Album.find(params[:id].to_i())
-  @album.sold
-  @albums = Album.all
-  @sold_albums = Album.sold_all()
   erb(:albums)
 end
 

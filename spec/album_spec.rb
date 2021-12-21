@@ -89,15 +89,6 @@ describe '#Album' do
 #     end
 #   end
 
-#   describe('#sold') do
-#     it("sorts albums by name") do
-#       album1 = Album.new("Giant Steps", "John Coltrane", "Jazz", 1960, nil)
-#       album1.save()
-#       album1.sold
-#       expect(Album.sold_all).to(eq([album1]))
-#     end
-#   end
-
 #   describe('#songs') do
 #     it("returns an album's songs") do
 #       album = Album.new("Giant Steps", nil)

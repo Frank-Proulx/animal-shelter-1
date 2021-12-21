@@ -1,7 +1,7 @@
 require ('pry')
 
 class Album
-  attr_accessor :id, :name, :artist, :genre, :year, :sold
+  attr_accessor :id, :name, :artist, :genre, :year
 
   # @@albums = {}
   # @@sold_albums = {}
@@ -13,7 +13,6 @@ class Album
     @genre = attributes.fetch(:genre)
     @year = attributes.fetch(:year)
     @id = attributes.fetch(:id)
-    @sold = attributes.fetch(:sold)
   end
 
   def self.all
@@ -30,33 +29,18 @@ class Album
     albums
   end
 
-  def self.sold_all
-    sold_results = []
-    results = DB.exec("SELECT * FROM albums WHERE sold = 't';")
-    results.each do |sold_album|
-      name = album.fetch("name")
-      artist = album.fetch("artist")
-      genre = album.fetch("genre")
-      year = album.fetch("year").to_i
-      sold = album.fetch("sold")
-      id = album.fetch("id").to_i
-      sold_results.push(Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :sold => sold, :id => id}))
-    end
-    sold_results
-  end
-
-  def self.search(name_searched)
-    arr_results = []
-    @@albums.values.each do |album|
-      if album.name == name_searched
-        arr_results.push(album)
-      end
-    end
-    arr_results
-  end
+  # def self.search(name_searched)
+  #   arr_results = []
+  #   @@albums.values.each do |album|
+  #     if album.name == name_searched
+  #       arr_results.push(album)
+  #     end
+  #   end
+  #   arr_results
+  # end
 
   def save
-    result = DB.exec("INSERT INTO albums (name, artist, genre, year, sold) VALUES ('#{@name}', '#{@artist}', '#{@genre}', #{@year}, '#{@sold}') RETURNING id;") # update
+    result = DB.exec("INSERT INTO albums (name, artist, genre, year, sold) VALUES ('#{@name}', '#{@artist}', '#{@genre}', #{@year}) RETURNING id;") # update
     @id = result.first().fetch("id").to_i
   end
 
@@ -78,10 +62,6 @@ class Album
     sold = album.fetch("sold")
     Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :sold => sold, :id => id})
   end
-
-  # def self.find_sold(id)
-  #   @@sold_albums[id]
-  # end
 
   def update(attributes)
     if (attributes.has_key?(:name)) && (attributes.fetch(:name) != nil)
@@ -118,19 +98,6 @@ class Album
   #     @@albums[element.id] = element
   #   end
   # end
-
-  # def self.sort_sold
-  #   array = @@sold_albums.values.sort_by! &:name
-  #   @@sold_albums = {}
-  #   array.each do |element|
-  #     @@sold_albums[element.id] = element
-  #   end
-  # end
-
-  def sold
-    @sold = 't'
-    DB.exec("UPDATE albums SET sold = 't' WHERE id = #{@id};")
-  end
 
   def songs
     Song.find_by_album(self.id)
