@@ -57,6 +57,19 @@ describe '#Artist' do
       expect(assoc["album_id"].to_i).to(eq(album.id))
     end
   end
+  
+  describe('#update') do
+    it("see if joined table has two rows of same thing") do
+      artist = Artist.new({:name => "John Coltrane", :id => nil})
+      artist.save()
+      album = Album.new({:name => "Blue", :genre => "Jazz", :year => 1960, :id => nil})
+      album.save()
+      artist.update({:album_name => "Blue"})
+      artist.update({:album_name => "Blue"})
+      result = DB.exec("SELECT * FROM albums_artists WHERE artist_id = #{artist.id} AND album_id = #{album.id};")
+      expect(result[1]).to(eq(1))
+    end
+  end
 
   describe('#delete') do
     it("deletes an album by id") do
@@ -69,6 +82,18 @@ describe '#Artist' do
     end
   end
   
+  describe('#albums') do
+    it("see if joined table has two rows of same thing") do
+      artist = Artist.new({:name => "John Coltrane", :id => nil})
+      artist.save()
+      album = Album.new({:name => "Blue", :genre => "Jazz", :year => 1960, :id => nil})
+      album.save()
+      artist.update({:album_name => "Blue"})
+      expect(artist.albums).to(eq(1))
+      
+    end
+  end
+
 #   describe('.sort') do
 #     it("sorts albums by name") do
 #       album1 = Album.new("Giant Steps", "John Coltrane", "Jazz", 1960, nil)

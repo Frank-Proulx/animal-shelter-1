@@ -46,7 +46,8 @@ class Artist
     elsif (attributes.has_key?(:album_name)) && (attributes.fetch(:album_name) != nil)
       album_name = attributes.fetch(:album_name)
       album = DB.exec("SELECT * FROM albums WHERE lower(name)='#{album_name.downcase}';").first
-      if album != nil
+      joined_result = DB.exec("SELECT * FROM albums_artists WHERE album_id = #{album['id'].to_i} AND artist_id=#{@id};").first
+      if (album != nil) && (joined_result == nil)
         DB.exec("INSERT INTO albums_artists (album_id, artist_id) VALUES (#{album['id'].to_i}, #{@id});")
       end
     end
@@ -76,7 +77,9 @@ class Artist
       album_id = result.fetch("album_id").to_i()
       album = DB.exec("SELECT * FROM albums WHERE id = #{album_id};")
       name = album.first().fetch("name")
-      albums.push(Album.new({:name => name, :id => album_id}))
+      genre = album.first().fetch("genre")
+      year = album.first().fetch("year")
+      albums.push(Album.new({:name => name, :genre => genre, :year => year, :id => album_id}))
     end
     albums
   end
