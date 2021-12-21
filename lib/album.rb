@@ -48,9 +48,12 @@ class Album
     Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :id => id})
   end
 
-  def update(name) # update for all attributes
+  def update(name, artist, genre, year) # update for all attributes
     @name = name
-    DB.exec("UPDATE albums SET name = '#{@name}' WHERE id = #{@id};")
+    @artist = artist
+    @genre = genre
+    @year = year
+    DB.exec("UPDATE albums SET name='#{@name}', artist='#{@artist}', genre='#{@genre}', year=#{@year} WHERE id = #{@id};")
   end
 
   def delete # update
