@@ -3,10 +3,6 @@ require ('pry')
 class Album
   attr_accessor :id, :name, :artist, :genre, :year
 
-  # @@albums = {}
-  # @@sold_albums = {}
-  # @@total_rows = 0 
-
   def initialize(attributes)
     @name = attributes.fetch(:name)
     @artist = attributes.fetch(:artist)
@@ -28,16 +24,6 @@ class Album
     end
     albums
   end
-
-  # def self.search(name_searched)
-  #   arr_results = []
-  #   @@albums.values.each do |album|
-  #     if album.name == name_searched
-  #       arr_results.push(album)
-  #     end
-  #   end
-  #   arr_results
-  # end
 
   def save
     result = DB.exec("INSERT INTO albums (name, artist, genre, year) VALUES ('#{@name}', '#{@artist}', '#{@genre}', #{@year}) RETURNING id;") # update
