@@ -33,7 +33,7 @@ class Song
 
   def save
     result = DB.exec("INSERT INTO songs (name, album_id) VALUES ('#{@name}', #{@album_id}) RETURNING id;")
-    @id = result.first().fetch("id").to_i
+    @id = result.first.fetch("id").to_i
   end
 
   def self.find(id)

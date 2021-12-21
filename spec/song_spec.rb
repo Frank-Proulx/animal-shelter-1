@@ -5,7 +5,7 @@ require 'spec_helper'
 describe '#Song' do
 
   before(:each) do
-    @album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
+    @album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
     @album.save()
   end
 
@@ -14,7 +14,7 @@ describe '#Song' do
       song = Song.new({:name => "Naima", :album_id => @album.id, :id => nil})
       song2 = Song.new({:name => "Naima", :album_id => @album.id, :id => nil})
       expect(song).to(eq(song2))
-    end
+    end 
   end
 
   describe('.all') do
@@ -78,7 +78,7 @@ describe '#Song' do
 
   describe('.find_by_album') do
     it("finds songs for an album") do
-      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
+      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
       album2.save
       song = Song.new({:name => "Naima", :album_id => @album.id, :id => nil})
       song.save()
