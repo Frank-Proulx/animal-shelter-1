@@ -1,4 +1,4 @@
-require 'album'
+require 'artist'
 require 'spec_helper'
 
 describe '#Artist' do
@@ -11,9 +11,9 @@ describe '#Artist' do
 
   describe('#save') do
     it("saves an album") do
-      album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil}) 
+      album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil}) 
       album.save()
-      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
+      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       album2.save()
       expect(Album.all).to(eq([album, album2]))
     end
@@ -21,17 +21,17 @@ describe '#Artist' do
 
   describe('#==') do
     it("is the same album if it has the same attributes as another album") do
-      album = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f',:id => nil})
-      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
+      album = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
+      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       expect(album).to(eq(album2))
     end
   end
 
   describe('.clear') do
     it("clears all albums") do
-      album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
+      album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       album.save()
-      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
+      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       album2.save()
       Album.clear()
       expect(Album.all).to(eq([]))
@@ -40,24 +40,24 @@ describe '#Artist' do
 
   describe('.find') do
     it("finds an album by id") do
-      album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
+      album = Album.new({:name => "Giant Steps", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       album.save()
-      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :sold => 'f', :id => nil})
+      album2 = Album.new({:name => "Blue", :artist => "John Coltrane", :genre => "Jazz", :year => 1960, :id => nil})
       album2.save()
       expect(Album.find(album.id)).to(eq(album))
     end
   end
 
-  describe('#update') do
-    it("adds an album to an artist") do
-      artist = Artist.new({:name => "John Coltrane", :id => nil})
-      artist.save()
-      album = Album.new({:name => "A Love Supreme", :id => nil})
-      album.save()
-      artist.update({:album_name => "A Love Supreme"})
-      expect(artist.albums).to(eq([album]))
-    end
-  end
+  # describe('#update') do
+  #   it("adds an album to an artist") do
+  #     artist = Artist.new({:name => "John Coltrane", :id => nil})
+  #     artist.save()
+  #     album = Album.new({:name => "A Love Supreme", :id => nil})
+  #     album.save()
+  #     artist.update({:album_name => "A Love Supreme"})
+  #     expect(artist.albums).to(eq([album]))
+  #   end
+  # end
 
   # describe('#update') do
   #   it("updates an album by id") do
