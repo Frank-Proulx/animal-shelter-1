@@ -1,11 +1,10 @@
 require ('pry')
 
 class Album
-  attr_accessor :id, :name, :artist, :genre, :year
+  attr_accessor :id, :name, :genre, :year
 
   def initialize(attributes)
     @name = attributes.fetch(:name)
-    @artist = attributes.fetch(:artist)
     @genre = attributes.fetch(:genre)
     @year = attributes.fetch(:year)
     @id = attributes.fetch(:id)
@@ -16,22 +15,21 @@ class Album
     albums = []
     returned_albums.each() do |album|
       name = album.fetch("name")
-      artist = album.fetch("artist")
       genre = album.fetch("genre")
       year = album.fetch("year").to_i
       id = album.fetch("id").to_i
-      albums.push(Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :id => id}))
+      albums.push(Album.new({:name => name, :genre => genre, :year => year, :id => id}))
     end
     albums
   end
 
   def save
-    result = DB.exec("INSERT INTO albums (name, artist, genre, year) VALUES ('#{@name}', '#{@artist}', '#{@genre}', #{@year}) RETURNING id;") # update
+    result = DB.exec("INSERT INTO albums (name, genre, year) VALUES ('#{@name}', '#{@genre}', #{@year}) RETURNING id;") # update
     @id = result.first().fetch("id").to_i
   end
 
   def ==(album_to_compare)
-    (self.name == album_to_compare.name) && (self.year == album_to_compare.year) && (self.genre == album_to_compare.genre) && (self.artist == album_to_compare.artist)
+    (self.name == album_to_compare.name) && (self.year == album_to_compare.year) && (self.genre == album_to_compare.genre)
   end
 
   def self.clear
@@ -41,19 +39,17 @@ class Album
   def self.find(id)
     album = DB.exec("SELECT * FROM albums WHERE id = #{id};").first # update
     name = album.fetch("name")
-    artist = album.fetch("artist")
     genre = album.fetch("genre")
     year = album.fetch("year").to_i
     id = album.fetch("id").to_i
-    Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :id => id})
+    Album.new({:name => name, :genre => genre, :year => year, :id => id})
   end
 
-  def update(name, artist, genre, year) # update for all attributes
+  def update(name, genre, year) # update for all attributes
     @name = name
-    @artist = artist
     @genre = genre
     @year = year
-    DB.exec("UPDATE albums SET name='#{@name}', artist='#{@artist}', genre='#{@genre}', year=#{@year} WHERE id = #{@id};")
+    DB.exec("UPDATE albums SET name='#{@name}', genre='#{@genre}', year=#{@year} WHERE id = #{@id};")
   end
 
   def delete # update

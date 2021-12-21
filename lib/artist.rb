@@ -1,51 +1,42 @@
 require ('pry')
 
 class Artist
-  attr_accessor :id, :name, :artist, :genre, :year
+  attr_accessor :id, :name
 
   def initialize(attributes)
     @name = attributes.fetch(:name)
-    @artist = attributes.fetch(:artist)
-    @genre = attributes.fetch(:genre)
-    @year = attributes.fetch(:year)
     @id = attributes.fetch(:id)
   end
 
   def self.all
-    returned_albums = DB.exec("SELECT * FROM albums;")
-    albums = []
-    returned_albums.each() do |album|
-      name = album.fetch("name")
-      artist = album.fetch("artist")
-      genre = album.fetch("genre")
-      year = album.fetch("year").to_i
-      id = album.fetch("id").to_i
-      albums.push(Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :id => id}))
+    returned_artists = DB.exec("SELECT * FROM artists;")
+    artists = []
+    returned_artists.each() do |artist|
+      name = artist.fetch("name")
+      id = artist.fetch("id").to_i
+      artists.push(Artist.new({:name => name, :id => id}))
     end
-    albums
+    artists
   end
 
   def save
-    result = DB.exec("INSERT INTO albums (name, artist, genre, year) VALUES ('#{@name}', '#{@artist}', '#{@genre}', #{@year}) RETURNING id;") # update
+    result = DB.exec("INSERT INTO artists (name) VALUES ('#{@name}') RETURNING id;") # update
     @id = result.first().fetch("id").to_i
   end
 
-  def ==(album_to_compare)
-    (self.name == album_to_compare.name) && (self.year == album_to_compare.year) && (self.genre == album_to_compare.genre) && (self.artist == album_to_compare.artist)
+  def ==(artist_to_compare)
+    self.name == artist_to_compare.name
   end
 
   def self.clear
-    DB.exec("DELETE FROM albums *;")
+    DB.exec("DELETE FROM artists *;")
   end
 
   def self.find(id)
-    album = DB.exec("SELECT * FROM albums WHERE id = #{id};").first # update
-    name = album.fetch("name")
-    artist = album.fetch("artist")
-    genre = album.fetch("genre")
-    year = album.fetch("year").to_i
-    id = album.fetch("id").to_i
-    Album.new({:name => name, :artist => artist, :genre => genre, :year => year, :id => id})
+    artist = DB.exec("SELECT * FROM artists WHERE id = #{id};").first # update
+    name = artist.fetch("name")
+    id = artist.fetch("id").to_i
+    Artist.new({:name => name, :id => id})
   end
 
   def update(attributes)
@@ -74,9 +65,9 @@ class Artist
   #   end
   # end
 
-  def songs
-    Song.find_by_album(self.id)
-  end
+  # def songs
+  #   Song.find_by_album(self.id)
+  # end
 
   def albums
     albums = []
