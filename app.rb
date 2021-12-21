@@ -8,11 +8,6 @@ require 'pg'
 
 DB = PG.connect({:dbname => "record_store"})
 
-get('/test') do
-  @something = "this is a variable"
-  erb(:whatever)
-end
-
 get('/') do
   @albums = Album.all
   erb(:albums)
