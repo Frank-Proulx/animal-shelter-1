@@ -52,22 +52,21 @@ class Pet
   end
 
   def update(attributes) # update for all attributes
-    @name = attributes.fetch(:name)
     if (attributes.has_key?(:name)) && (attributes.fetch(:name) != nil)
-    if attributes.has_key?(:gender)
+      @name = attributes.fetch(:name)
+    end
+    if attributes.has_key?(:gender) && (attributes.fetch(:gender) != nil)
       @gender = attributes.fetch(:date) 
     end
-    if attributes.has_key?(:type)
+    if attributes.has_key?(:type) && (attributes.fetch(:type) != nil)
       @type = attributes.fetch(:type) 
     end
-    if attributes.has_key?(:breed)
+    if attributes.has_key?(:breed) && (attributes.fetch(:breed) != nil)
       @breed = attributes.fetch(:breed) 
     end
-    if attributes.has_key?(:date)
+    if attributes.has_key?(:date) && (attributes.fetch(:date) != nil)
       @breed = attributes.fetch(:date) 
     end
-    
-    
     DB.exec("UPDATE pets SET name='#{@name}', gender='#{@gender}', date='#{@date}', type='#{@type}', breed='#{@breed}' WHERE id = #{@id};")
   end
 
